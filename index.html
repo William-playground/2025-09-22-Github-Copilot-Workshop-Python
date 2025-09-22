@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポモドーロタイマー MVP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍅 ポモドーロタイマー</h1>
+        </header>
+        
+        <main>
+            <!-- Timer Display Section -->
+            <div class="timer-section">
+                <div class="timer-container">
+                    <!-- SVG Progress Ring -->
+                    <svg class="progress-ring" width="200" height="200">
+                        <circle class="progress-ring-background" 
+                                cx="100" cy="100" r="90" 
+                                stroke="#e6e6e6" stroke-width="10" fill="transparent"/>
+                        <circle class="progress-ring-progress" 
+                                cx="100" cy="100" r="90" 
+                                stroke="#ff6b6b" stroke-width="10" fill="transparent"
+                                stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+                    </svg>
+                    
+                    <!-- Timer Display -->
+                    <div class="timer-display">
+                        <span id="timer-text">25:00</span>
+                        <div class="timer-status" id="timer-status">停止中</div>
+                    </div>
+                </div>
+                
+                <!-- Control Buttons -->
+                <div class="controls">
+                    <button id="start-btn" class="btn btn-primary">開始</button>
+                    <button id="pause-btn" class="btn btn-secondary" disabled>一時停止</button>
+                    <button id="resume-btn" class="btn btn-primary" disabled style="display:none;">再開</button>
+                    <button id="reset-btn" class="btn btn-danger">リセット</button>
+                </div>
+            </div>
+            
+            <!-- Stats Panel -->
+            <div class="stats-section">
+                <h2>今日の実績</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed-count">0</div>
+                        <div class="stat-label">完了セッション</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="focus-time">0m</div>
+                        <div class="stat-label">集中時間</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Error Message -->
+        <div id="error-message" class="error-message" style="display:none;">
+            <span id="error-text"></span>
+            <button id="error-close">&times;</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
