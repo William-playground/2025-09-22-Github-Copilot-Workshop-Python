@@ -1,0 +1,10 @@
+{
+  "work_duration": 45,
+  "break_duration": 15,
+  "theme": "focus",
+  "sound_settings": {
+    "start_sound": true,
+    "end_sound": true,
+    "tick_sound": true
+  }
+}
