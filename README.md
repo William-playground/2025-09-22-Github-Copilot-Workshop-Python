@@ -1,1 +1,80 @@
-ワークショップの手順：https://moulongzhang.github.io/2025-Github-Copilot-Workshop/github-copilot-workshop/#0
+# ポモドーロタイマー MVP
+
+フロントエンド MVP として実装されたポモドーロタイマーです。
+
+## ワークショップの手順
+https://moulongzhang.github.io/2025-Github-Copilot-Workshop/github-copilot-workshop/#0
+
+## 機能
+
+- **タイマー表示**: mm:ss 形式でのカウントダウン表示
+- **SVG プログレス リング**: 視覚的な進捗表示
+- **ボタン操作**: 開始・一時停止・再開・リセット
+- **今日の実績**: 完了セッション数と集中時間の表示
+- **ドリフト補正**: 正確なタイマー表示のための時間補正
+- **リアルタイム更新**: 100ms間隔でのポーリング更新
+- **エラーハンドリング**: API接続エラー時の適切な処理
+
+## セットアップ
+
+### 1. 依存関係のインストール
+
+```bash
+pip install Flask
+```
+
+### 2. サーバーの起動
+
+```bash
+python app.py
+```
+
+サーバーは `http://localhost:5000` で起動します。
+
+### 3. ブラウザでアクセス
+
+ブラウザで `http://localhost:5000` にアクセスしてください。
+
+## API エンドポイント
+
+### タイマー状態取得
+- `GET /api/timer/state`
+- レスポンス: タイマーの現在状態、残り時間、プログレス
+
+### タイマー操作
+- `POST /api/timer/start` - タイマー開始
+- `POST /api/timer/pause` - タイマー一時停止
+- `POST /api/timer/resume` - タイマー再開
+- `POST /api/timer/reset` - タイマーリセット
+
+### 統計情報
+- `GET /api/stats/today` - 今日の完了セッション数と集中時間
+
+## ファイル構成
+
+- `app.py` - Flask バックエンドサーバー
+- `index.html` - メインのHTMLファイル
+- `style.css` - スタイルシート
+- `script.js` - フロントエンドJavaScript
+- `README.md` - このファイル
+
+## 技術的特徴
+
+### ドリフト補正
+JavaScriptのタイマーはブラウザタブが非アクティブになると精度が落ちるため、サーバーとの同期により正確な時間表示を実現。
+
+### レスポンシブデザイン
+モバイルデバイスでも使いやすいレスポンシブデザインを採用。
+
+### エラーハンドリング
+ネットワークエラーやサーバーダウン時にも適切にエラーメッセージを表示。
+
+## 開発者向け情報
+
+### ポーリング間隔
+- タイマー状態: 100ms間隔
+- 統計情報: 5秒間隔
+
+### ブラウザサポート
+- Chrome/Edge/Safari/Firefox の最新版
+- ES6+ 機能を使用
