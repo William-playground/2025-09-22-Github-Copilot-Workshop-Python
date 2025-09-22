@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-ポモドーロタイマー - 視覚的フィードバック強化版
-Enhanced Pomodoro Timer with Visual Feedback
+ポモドーロタイマーのデモスクリプト
+Demo script for Pomodoro Timer with accelerated timing for demonstration
 """
 
 import tkinter as tk
@@ -13,42 +13,18 @@ from typing import Tuple, List
 import random
 
 
-class Particle:
-    """背景エフェクト用のパーティクルクラス"""
-    
-    def __init__(self, x: float, y: float, vx: float, vy: float, 
-                 color: str, size: float, lifetime: float):
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
-        self.color = color
-        self.size = size
-        self.lifetime = lifetime
-        self.max_lifetime = lifetime
-        self.alpha = 1.0
-    
-    def update(self, dt: float) -> bool:
-        """パーティクルを更新し、生存状態を返す"""
-        self.x += self.vx * dt
-        self.y += self.vy * dt
-        self.lifetime -= dt
-        self.alpha = max(0, self.lifetime / self.max_lifetime)
-        return self.lifetime > 0
-
-
-class PomodoroTimer:
-    """ポモドーロタイマーのメインクラス"""
+class DemoPomodoroTimer:
+    """デモ用のポモドーロタイマー（加速版）"""
     
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("ポモドーロタイマー - 視覚的フィードバック強化版")
+        self.root.title("ポモドーロタイマー - デモ版（加速）")
         self.root.geometry("600x700")
         self.root.configure(bg="#1a1a2e")
         
-        # タイマー設定
-        self.work_duration = 25 * 60  # 25分
-        self.break_duration = 5 * 60  # 5分
+        # タイマー設定（デモ用に短縮）
+        self.work_duration = 30  # 30秒（通常25分）
+        self.break_duration = 10  # 10秒（通常5分）
         self.current_duration = self.work_duration
         self.remaining_time = self.work_duration
         self.is_running = False
@@ -56,7 +32,7 @@ class PomodoroTimer:
         
         # UI要素
         self.canvas = None
-        self.particles: List[Particle] = []
+        self.particles: List = []
         self.last_update_time = time.time()
         
         # アニメーション設定
@@ -76,12 +52,22 @@ class PomodoroTimer:
         # タイトル
         title_label = tk.Label(
             main_frame, 
-            text="ポモドーロタイマー",
+            text="ポモドーロタイマー（デモ版）",
             font=("Helvetica", 24, "bold"),
             fg="#ffffff",
             bg="#1a1a2e"
         )
-        title_label.pack(pady=(0, 20))
+        title_label.pack(pady=(0, 10))
+        
+        # デモ説明
+        demo_label = tk.Label(
+            main_frame, 
+            text="デモ用加速版: 作業30秒、休憩10秒",
+            font=("Helvetica", 12),
+            fg="#cccccc",
+            bg="#1a1a2e"
+        )
+        demo_label.pack(pady=(0, 20))
         
         # キャンバス（メイン表示エリア）
         self.canvas = tk.Canvas(
@@ -196,7 +182,7 @@ class PomodoroTimer:
             color = self.get_progress_color(progress)
             
             # 円弧を複数のセグメントで描画（滑らかなアニメーション）
-            segments = int(angle * 50)  # 細かいセグメント
+            segments = max(1, int(angle * 50))  # 細かいセグメント
             for i in range(segments):
                 start_angle = (i * angle / segments) - math.pi/2
                 end_angle = ((i + 1) * angle / segments) - math.pi/2
@@ -232,7 +218,7 @@ class PomodoroTimer:
     def spawn_particles(self):
         """パーティクルエフェクトの生成"""
         if len(self.particles) < 50:  # 最大パーティクル数制限
-            for _ in range(2):
+            for _ in range(3):  # デモ用に多めに生成
                 # ランダムな位置と速度
                 x = random.uniform(50, 550)
                 y = random.uniform(350, 400)
@@ -246,7 +232,12 @@ class PomodoroTimer:
                 size = random.uniform(2, 6)
                 lifetime = random.uniform(2, 4)
                 
-                particle = Particle(x, y, vx, vy, color, size, lifetime)
+                particle = {
+                    'x': x, 'y': y, 'vx': vx, 'vy': vy,
+                    'color': color, 'size': size,
+                    'lifetime': lifetime, 'max_lifetime': lifetime,
+                    'alpha': 1.0
+                }
                 self.particles.append(particle)
     
     def update_particles(self, dt: float):
@@ -256,16 +247,21 @@ class PomodoroTimer:
         # パーティクル更新
         alive_particles = []
         for particle in self.particles:
-            if particle.update(dt):
+            particle['x'] += particle['vx'] * dt
+            particle['y'] += particle['vy'] * dt
+            particle['lifetime'] -= dt
+            particle['alpha'] = max(0, particle['lifetime'] / particle['max_lifetime'])
+            
+            if particle['lifetime'] > 0:
                 alive_particles.append(particle)
                 
                 # パーティクル描画
-                alpha_color = self.blend_alpha(particle.color, particle.alpha)
+                alpha_color = self.blend_alpha(particle['color'], particle['alpha'])
                 self.canvas.create_oval(
-                    particle.x - particle.size/2,
-                    particle.y - particle.size/2,
-                    particle.x + particle.size/2,
-                    particle.y + particle.size/2,
+                    particle['x'] - particle['size']/2,
+                    particle['y'] - particle['size']/2,
+                    particle['x'] + particle['size']/2,
+                    particle['y'] + particle['size']/2,
                     fill=alpha_color,
                     outline="",
                     tags="particle"
@@ -407,5 +403,14 @@ class PomodoroTimer:
 
 
 if __name__ == "__main__":
-    app = PomodoroTimer()
+    print("ポモドーロタイマーデモを開始します...")
+    print("特徴:")
+    print("- 円形プログレスバーのアニメーション")
+    print("- 時間経過による色のグラデーション変化（青→黄→赤）")
+    print("- 背景パーティクルアニメーション")
+    print("- 波紋エフェクト")
+    print("- デモ用に加速（作業30秒、休憩10秒）")
+    print()
+    
+    app = DemoPomodoroTimer()
     app.run()
