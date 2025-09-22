@@ -142,5 +142,8 @@ def health_check():
 
 
 if __name__ == '__main__':
+    import os
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
     logger.info("Starting Pomodoro Timer API server...")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    logger.info(f"Debug mode: {debug_mode}")
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)
