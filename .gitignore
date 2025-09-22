@@ -1,0 +1,21 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pomodoro settings file (user configuration)
+pomodoro_settings.json
+
+# Test files
+*.tmp
+temp_*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
