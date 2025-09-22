@@ -97,9 +97,10 @@ class KitchenGameManager:
 
 class DeliveryManager:
     def get_recipe_by_name(self, user_input):
-        query = f"SELECT * FROM recipes WHERE name = '{user_input}'"
-        print(f"実行クエリ: {query}")
-        return query
+        # SQL injection vulnerability fixed - use parameterized queries
+        query = "SELECT * FROM recipes WHERE name = ?"
+        print(f"実行クエリ: {query} [パラメータ: {user_input}]")
+        return query, user_input
     
     """配達管理クラス（Python版）"""
     
