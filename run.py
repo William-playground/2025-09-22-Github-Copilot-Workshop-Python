@@ -10,8 +10,11 @@ if __name__ == "__main__":
     
     if env == "production":
         # 本番環境では常にデバッグモードを無効化
-        app.run(host="127.0.0.1", port=5000, debug=False)
+        host = os.environ.get("FLASK_HOST", "127.0.0.1")
+        port = int(os.environ.get("FLASK_PORT", 5000))
+        app.run(host=host, port=port, debug=False)
     else:
         # 開発環境でもデバッグモードは環境変数で制御
         host = os.environ.get("FLASK_HOST", "127.0.0.1")
-        app.run(host=host, port=5000, debug=debug_mode)
+        port = int(os.environ.get("FLASK_PORT", 5000))
+        app.run(host=host, port=port, debug=debug_mode)

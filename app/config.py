@@ -1,12 +1,14 @@
 # タイマー・休憩時間などの設定値
+import os
+
 FOCUS_DEFAULT_SEC = 25 * 60
 SHORT_BREAK_SEC = 5 * 60
 LONG_BREAK_SEC = 15 * 60
 LONG_BREAK_INTERVAL = 4  # 何回毎にロング休憩
 
 class Config:
-    SECRET_KEY = "dev-key"  # 本番は環境変数で
-    SQLALCHEMY_DATABASE_URI = "sqlite:///pomodoro.db"
+    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-key")  # 本番は環境変数で
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///pomodoro.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FOCUS_DEFAULT_SEC = FOCUS_DEFAULT_SEC
     SHORT_BREAK_SEC = SHORT_BREAK_SEC
